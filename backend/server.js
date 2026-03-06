@@ -20,11 +20,11 @@ app.get('/api/profile', (req, res) => {
 
 // PUT (Update) Profile
 app.put('/api/profile', (req, res) => {
-    const { name, role, location, bio, avatar, github, linkedin, twitter, id } = req.body;
+    const { name, role, location, bio, avatar, github, linkedin, id } = req.body;
     if (!id) return res.status(400).json({ error: 'Profile ID is required' });
 
-    db.run('UPDATE profile SET name = ?, role = ?, location = ?, bio = ?, avatar = ?, github = ?, linkedin = ?, twitter = ? WHERE id = ?',
-        [name, role, location, bio, avatar, github, linkedin, twitter, id],
+    db.run('UPDATE profile SET name = ?, role = ?, location = ?, bio = ?, avatar = ?, github = ?, linkedin = ? WHERE id = ?',
+        [name, role, location, bio, avatar, github, linkedin, id],
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
 
