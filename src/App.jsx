@@ -165,6 +165,7 @@ export default function App() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isGeneratingBio, setIsGeneratingBio] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
   // Scroll Progress
   const { scrollYProgress } = useScroll();
@@ -174,13 +175,13 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const profileRes = await fetch('http://localhost:3000/api/profile');
+        const profileRes = await fetch(`${API_BASE_URL}/api/profile`);
         if (profileRes.ok) {
           const profileData = await profileRes.json();
           setProfile(profileData);
         }
 
-        const skillsRes = await fetch('http://localhost:3000/api/skills');
+        const skillsRes = await fetch(`${API_BASE_URL}/api/skills`);
         if (skillsRes.ok) {
           const skillsData = await skillsRes.json();
 
@@ -233,7 +234,7 @@ export default function App() {
     setSkills(skills.map(skill => skill.id === id ? { ...skill, likes: skill.likes + 1 } : skill));
 
     try {
-      await fetch(`http://localhost:3000/api/skills/${id}/endorse`, { method: 'POST' });
+      await fetch(`${API_BASE_URL}/api/skills/${id}/endorse`, { method: 'POST' });
     } catch (error) {
       console.error("Error endorsing skill:", error);
     }
@@ -242,7 +243,7 @@ export default function App() {
   const handleSaveProfile = async () => {
     setIsSaving(true);
     try {
-      const res = await fetch('http://localhost:3000/api/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile)
